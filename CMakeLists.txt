@@ -126,6 +126,10 @@ if (UNIX AND NOT APPLE AND NOT ${CMAKE_SYSTEM_NAME} MATCHES FreeBSD)
     target_compile_definitions(${PROJECT_NAME} PRIVATE -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=500)
 endif()
 
+if (WIN32)
+    add_compile_options(/wd4068)
+endif()
+
 aws_add_sanitizers(${PROJECT_NAME} BLACKLIST "sanitizer-blacklist.txt")
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PLATFORM_LIBS})
 target_compile_definitions(${PROJECT_NAME} PRIVATE ${PLATFORM_DEFINES})
@@ -203,7 +207,7 @@ else()
 endif()
 
 install(EXPORT "${PROJECT_NAME}-targets"
-    DESTINATION "${LIBRARY_DIRECTORY}/${PROJECT_NAME}/cmake/${TARGET_DIR}"
+    DESTINATION "${LIBRARY_DIRECTORY}/${PROJECT_NAME}/cmake/"
     NAMESPACE AWS::
     COMPONENT Development)
 
